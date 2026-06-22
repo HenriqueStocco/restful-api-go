@@ -13,9 +13,9 @@ http:
     type: json
     data: |-
       {
-        "title": "First note",
-        "description": "First note description",
-        "color": "green"
+        "title": "Dormir cedo",
+        "description": "Dormir cedo no bagulho, muito importante",
+        "color": "red"
       }
   auth: inherit
 

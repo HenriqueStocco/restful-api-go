@@ -2,7 +2,7 @@ package notes
 
 import (
 	d "github.com/HenriqueStocco/restful-api-crud-go/internal/db"
-	u "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 func FindAllNotesRepository() (*[]NoteSchema, error) {
@@ -52,7 +52,7 @@ func FindAllNotesRepository() (*[]NoteSchema, error) {
 	return &notes, nil
 }
 
-func FindNoteById(id u.UUID) (*NoteSchema, error) {
+func FindNoteByIdRepository(noteId uuid.UUID) (*NoteSchema, error) {
 	var note NoteSchema
 
 	db, dbError := d.DBConnection()
@@ -71,7 +71,7 @@ func FindNoteById(id u.UUID) (*NoteSchema, error) {
 			updated_at 
 		FROM notes
 		WHERE id = ?;
-	`, id).Scan(
+	`, noteId).Scan(
 		&note.ID,
 		&note.Title,
 		&note.Description,

@@ -15,6 +15,7 @@ func main() {
 	http.HandleFunc(s.SetURL("/health"), h.HealthHandler)
 	http.HandleFunc(s.SetURL("/notes"), n.CreateNoteHandler)
 	http.HandleFunc(s.SetURL("/notes/all"), n.FindAllNotesHandler)
+	http.HandleFunc(s.SetURL("/notes/{noteId}"), n.FindNoteByIdHandler)
 
 	err := http.ListenAndServe("localhost:8000", nil)
 

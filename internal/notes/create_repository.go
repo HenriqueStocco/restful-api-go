@@ -38,7 +38,7 @@ func CreateNoteRepository(noteData *NoteSchema) (*NoteSchema, error) {
 		return nil, exErr
 	}
 
-	createdNote, fErr := FindNoteById(id)
+	createdNote, fErr := FindNoteByIdRepository(id)
 
 	if fErr != nil {
 		return nil, fErr
