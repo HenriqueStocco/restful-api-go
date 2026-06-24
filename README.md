@@ -22,13 +22,13 @@
 /notes/create # create note
 
 # PUT
-/notes/{noteId}/update # update full note data
+/notes/update/{noteId} # update full note data
 
 # PATCH
-/notes/{noteId}?title=""       # update note title
-/notes/{noteId}?description="" # update note description
-/notes/{noteId}?color=""       # update note color
+/notes/update/{noteId}?title=""       # update note title
+/notes/update/{noteId}?description="" # update note description
+/notes/update/{noteId}?color=""       # update note color
 
 # DELETE
-/notes/kill/{noteId} # delete a note
+/notes/delete/{noteId} # delete a note
 ```

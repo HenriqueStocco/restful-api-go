@@ -3,28 +3,37 @@ package notes
 import (
 	"errors"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
-func UpdateFullNoteByIdService(reqUrl string) (*NoteSchema, error) {
+func UpdateNoteService(reqUrl string, noteData *NoteSchema) (bool, error) {
 	if reqUrl == "" {
-		return nil, errors.New("Empty request url")
+		return false, errors.New("Empty request url")
 	}
 
 	requestParam := strings.Split(reqUrl, "/")
 	noteIdString := requestParam[len(requestParam)-1]
-	noteId, parseError := uuid.Parse(noteIdString)
+	// noteId, parseError := uuid.Parse(noteIdString)
 
-	if parseError != nil {
-		return nil, errors.New("Error to parse noteId string to UUID")
+	// if parseError != nil {
+	// 	return false, errors.New("Error to parse noteId string to UUID")
+	// }
+
+	data := NoteSchema{
+		ID:          noteIdString,
+		Title:       noteData.Title,
+		Description: noteData.Description,
+		Color:       noteData.Color,
 	}
 
-	updatedNote, updateError := UpdateFullNoteByIdRepository(noteId)
+	result, updateError := UpdateNoteRepository(&data)
 
 	if updateError != nil {
-		return nil, errors.New("Failed to update note")
+		return false, errors.New("Failed to update note")
 	}
 
-	return updatedNote
+	if result != true {
+		return false, errors.New("Failed to update note")
+	}
+
+	return result, nil
 }

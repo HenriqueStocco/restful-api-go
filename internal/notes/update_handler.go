@@ -1,12 +1,14 @@
 package notes
 
 import (
+	"encoding/json"
 	"net/http"
 
 	h "github.com/HenriqueStocco/restful-api-crud-go/internal/helpers"
+	u "github.com/HenriqueStocco/restful-api-crud-go/internal/helpers"
 )
 
-func UpdateFullNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateNoteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		h.WriteJSON(w, http.StatusMethodNotAllowed, h.APIResponse{
 			Success: false,
@@ -16,7 +18,22 @@ func UpdateFullNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	noteData, serviceError := UpdateFullNoteByIdService(r.URL.Path)
+	defer r.Body.Close()
+
+	var noteData NoteSchema
+
+	decordeErr := json.NewDecoder(r.Body).Decode(&noteData)
+
+	if decordeErr != nil {
+		u.WriteJSON(w, http.StatusBadRequest, u.APIResponse{
+			Success: false,
+			Message: "Invalid request body",
+			Error:   decordeErr.Error(),
+		})
+		return
+	}
+
+	_, serviceError := UpdateNoteService(r.URL.Path, &noteData)
 
 	if serviceError != nil {
 		h.WriteJSON(w, http.StatusInternalServerError, h.APIResponse{
@@ -30,11 +47,10 @@ func UpdateFullNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
 	h.WriteJSON(w, http.StatusOK, h.APIResponse{
 		Success: true,
 		Message: "Note was updated successfully",
-		Data:    noteData,
 	})
 }
 
-func UpdateTitleNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateTitleNoteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPatch {
 		h.WriteJSON(w, http.StatusMethodNotAllowed, h.APIResponse{
 			Success: false,
@@ -44,7 +60,8 @@ func UpdateTitleNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func UpdateDescriptionNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
+
+func UpdateDescriptionNoteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPatch {
 		h.WriteJSON(w, http.StatusMethodNotAllowed, h.APIResponse{
 			Success: false,
@@ -54,7 +71,8 @@ func UpdateDescriptionNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func UpdateColorNoteByIdHandler(w http.ResponseWriter, r *http.Request) {
+
+func UpdateColorNoteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPatch {
 		h.WriteJSON(w, http.StatusMethodNotAllowed, h.APIResponse{
 			Success: false,
