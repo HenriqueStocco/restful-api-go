@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:8000/api/v1/note/update/color/:noteId?value=green
+  url: http://localhost:8000/api/v1/note/:noteId/color
   params:
     - name: value
       value: green

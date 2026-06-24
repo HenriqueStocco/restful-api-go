@@ -12,24 +12,36 @@ import (
 )
 
 func main() {
-	http.HandleFunc(string("GET "+s.SetURL("/health")), h.HealthHandler)
-	http.HandleFunc(string("POST "+s.SetURL("/note/create")), n.CreateNoteHandler)
-	http.HandleFunc(string("GET "+s.SetURL("/note/all")), n.FindAllNotesHandler)
-	http.HandleFunc(string("GET "+s.SetURL("/note/{noteId}")), n.FindNoteByIdHandler)
-	http.HandleFunc(string("PUT "+s.SetURL("/note/update/{noteId}")), n.UpdateNoteHandler)
-	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/title/{noteId}")), n.UpdateTitleNoteHandler)
-	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/description/{noteId}")), n.UpdateDescriptionNoteHandler)
-	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/color/{noteId}")), n.UpdateColorNoteHandler)
-	http.HandleFunc(string("DELETE "+s.SetURL("/note/delete/{noteId}")), n.DeleteNoteByIdHandler)
-	http.HandleFunc(string("DELETE "+s.SetURL("/note/delete")), n.DeleteAllNotesHandler)
+	mux := http.NewServeMux()
 
-	err := http.ListenAndServe("localhost:8000", nil)
+	/* GET routes */
+	mux.HandleFunc(s.SetURL("GET", "/healthcheck"), h.HealthHandler)
+	mux.HandleFunc(s.SetURL("GET", "/note"), n.FindAllNotesHandler)
+	mux.HandleFunc(s.SetURL("GET", "/note/{noteId}"), n.FindNoteByIdHandler)
+	/* POST routes */
+	mux.HandleFunc(s.SetURL("POST", "/note"), n.CreateNoteHandler)
+	/* PUT routes */
+	mux.HandleFunc(s.SetURL("PUT", "/note/{noteId}"), n.UpdateNoteHandler)
+	/* PATCH routes */
+	mux.HandleFunc(s.SetURL("PATCH", "/note/{noteId}/title"), n.UpdateTitleNoteHandler)
+	mux.HandleFunc(s.SetURL("PATCH", "/note/{noteId}/description"), n.UpdateDescriptionNoteHandler)
+	mux.HandleFunc(s.SetURL("PATCH", "/note/{noteId}/color"), n.UpdateColorNoteHandler)
+	/* DELETE routes */
+	mux.HandleFunc(s.SetURL("DELETE", "/note/{noteId}"), n.DeleteNoteByIdHandler)
+	mux.HandleFunc(s.SetURL("DELETE", "/note"), n.DeleteAllNotesHandler)
 
-	if errors.Is(err, http.ErrServerClosed) {
+	fmt.Println("Server running at localhost:8000")
+
+	httpErr := http.ListenAndServe("localhost:8000", mux)
+
+	if errors.Is(httpErr, http.ErrServerClosed) {
 		fmt.Printf("Server closed\n")
+
 		return
-	} else if err != nil {
-		fmt.Printf("Error to starting the server: %v\n", err)
+	}
+
+	if httpErr != nil {
+		fmt.Printf("Error to starting the server: %v\n", httpErr)
 
 		os.Exit(1)
 	}

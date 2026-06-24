@@ -1,9 +1,12 @@
 package helpers
 
-import "strings"
+import (
+	"strings"
+)
 
-func SetURL(path string) string {
+func SetURL(method string, path string) string {
 	const baseUrl string = "/api/v1"
+	completePath := strings.Join([]string{baseUrl, path}, "")
 
-	return strings.Join([]string{baseUrl, path}, "")
+	return strings.Join([]string{method, completePath}, " ")
 }

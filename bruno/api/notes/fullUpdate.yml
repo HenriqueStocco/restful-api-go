@@ -5,7 +5,7 @@ info:
 
 http:
   method: PUT
-  url: http://localhost:8000/api/v1/note/update/:noteId
+  url: http://localhost:8000/api/v1/note/:noteId
   params:
     - name: noteId
       value: de69619c-2ee9-4fa4-b759-aafed27675b9

@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:8000/api/v1/note/update/description/:noteId?value=New Description
+  url: http://localhost:8000/api/v1/note/:noteId/description
   params:
     - name: value
       value: New Description

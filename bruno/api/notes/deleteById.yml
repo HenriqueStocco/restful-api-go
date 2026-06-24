@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: http://localhost:8000/api/v1/note/delete/:noteId
+  url: http://localhost:8000/api/v1/note/:noteId
   params:
     - name: noteId
       value: b1582dbf-307c-42da-9d3e-9659bcb8aa8b

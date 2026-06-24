@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8000/api/v1/note/create
+  url: http://localhost:8000/api/v1/note
   headers:
     - name: Content-Type
       value: application/json
