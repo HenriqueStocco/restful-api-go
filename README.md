@@ -15,20 +15,20 @@
 /api/v1
 
 # GET
-/notes/all     # get all notes
-/notes/{noteId} # get a note
+/note/all     # get all notes
+/note/{noteId} # get a note
 
 # POST
-/notes/create # create note
+/note/create # create note
 
 # PUT
-/notes/update/{noteId} # update full note data
+/note/update/{noteId} # update full note data
 
 # PATCH
-/notes/update/{noteId}?title=""       # update note title
-/notes/update/{noteId}?description="" # update note description
-/notes/update/{noteId}?color=""       # update note color
+//note/update/title/{noteId}?value=""      # update note title
+/note/update/description/{noteId}?value="" # update note description
+/note/update/color/{noteId}?value=""       # update note color
 
 # DELETE
-/notes/delete/{noteId} # delete a note
+/note/delete/{noteId} # delete a note
 ```

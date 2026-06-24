@@ -1,0 +1,27 @@
+info:
+  name: fullUpdate
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: http://localhost:8000/api/v1/note/update/:noteId
+  params:
+    - name: noteId
+      value: de69619c-2ee9-4fa4-b759-aafed27675b9
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "title": "New note title",
+        "description": "New note description",
+        "color": "red"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -30,7 +30,7 @@ func UpdateNoteRepository(noteData *NoteSchema) (bool, error) {
 
 	return true, nil
 }
-func UpdateNoteTitleRepository(noteId string, noteTitle string) (bool, error) {
+func UpdateNoteTitleRepository(noteId string, newTitle string) (bool, error) {
 	db, conError := d.DBConnection()
 
 	if conError != nil {
@@ -43,7 +43,7 @@ func UpdateNoteTitleRepository(noteId string, noteTitle string) (bool, error) {
         SET 
 			title = ?
         WHERE id = ?;
-    `, noteTitle, noteId)
+    `, newTitle, noteId)
 
 	if updateErr != nil {
 		return false, updateErr
@@ -54,7 +54,7 @@ func UpdateNoteTitleRepository(noteId string, noteTitle string) (bool, error) {
 	return true, nil
 }
 
-func UpdateNoteDescriptionRepository(noteId string, noteDescription string) (bool, error) {
+func UpdateNoteDescriptionRepository(noteId string, newDescription string) (bool, error) {
 	db, conError := d.DBConnection()
 
 	if conError != nil {
@@ -67,7 +67,7 @@ func UpdateNoteDescriptionRepository(noteId string, noteDescription string) (boo
         SET 
 			description = ?
         WHERE id = ?;
-    `, noteDescription, noteId)
+    `, newDescription, noteId)
 
 	if updateErr != nil {
 		return false, updateErr
@@ -77,7 +77,7 @@ func UpdateNoteDescriptionRepository(noteId string, noteDescription string) (boo
 
 	return true, nil
 }
-func UpdateNoteColorRepository(noteId string, noteColor string) (bool, error) {
+func UpdateNoteColorRepository(noteId string, newColor string) (bool, error) {
 	db, conError := d.DBConnection()
 
 	if conError != nil {
@@ -90,7 +90,7 @@ func UpdateNoteColorRepository(noteId string, noteColor string) (bool, error) {
         SET 
 			color = ?
         WHERE id = ?;
-    `, noteColor, noteId)
+    `, newColor, noteId)
 
 	if updateErr != nil {
 		return false, updateErr

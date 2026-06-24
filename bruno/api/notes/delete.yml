@@ -1,0 +1,19 @@
+info:
+  name: delete
+  type: http
+  seq: 8
+
+http:
+  method: DELETE
+  url: http://localhost:8000/api/v1/note/delete/:noteId
+  params:
+    - name: noteId
+      value: de69619c-2ee9-4fa4-b759-aafed27675b9
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

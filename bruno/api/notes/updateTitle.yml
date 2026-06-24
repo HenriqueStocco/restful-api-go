@@ -1,0 +1,22 @@
+info:
+  name: updateTitle
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: http://localhost:8000/api/v1/note/update/title/:noteId?value=New Title
+  params:
+    - name: value
+      value: New Title
+      type: query
+    - name: noteId
+      value: de69619c-2ee9-4fa4-b759-aafed27675b9
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

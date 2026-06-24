@@ -59,6 +59,33 @@ func UpdateTitleNoteHandler(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+
+	newTitle := r.URL.Query().Get("value")
+
+	if newTitle == "" {
+		h.WriteJSON(w, http.StatusBadRequest, h.APIResponse{
+			Success: false,
+			Message: "Missing new title query param",
+			Error:   "pass the query ?value=newtitle",
+		})
+		return
+	}
+
+	_, serviceErr := UpdateNoteTitleService(r.URL.Path, newTitle)
+
+	if serviceErr != nil {
+		h.WriteJSON(w, http.StatusInternalServerError, h.APIResponse{
+			Success: false,
+			Message: "Failed to update note title",
+			Error:   serviceErr.Error(),
+		})
+		return
+	}
+
+	h.WriteJSON(w, http.StatusOK, h.APIResponse{
+		Success: true,
+		Message: "Note title was updated successfully",
+	})
 }
 
 func UpdateDescriptionNoteHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,6 +97,33 @@ func UpdateDescriptionNoteHandler(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+
+	newDescription := r.URL.Query().Get("value")
+
+	if newDescription == "" {
+		h.WriteJSON(w, http.StatusBadRequest, h.APIResponse{
+			Success: false,
+			Message: "Missing new description query param",
+			Error:   "pass the query ?value=newdescription",
+		})
+		return
+	}
+
+	_, serviceErr := UpdateNoteDescriptionService(r.URL.Path, newDescription)
+
+	if serviceErr != nil {
+		h.WriteJSON(w, http.StatusInternalServerError, h.APIResponse{
+			Success: false,
+			Message: "Failed to update note description",
+			Error:   serviceErr.Error(),
+		})
+		return
+	}
+
+	h.WriteJSON(w, http.StatusOK, h.APIResponse{
+		Success: true,
+		Message: "Note description was updated successfully",
+	})
 }
 
 func UpdateColorNoteHandler(w http.ResponseWriter, r *http.Request) {
@@ -81,4 +135,31 @@ func UpdateColorNoteHandler(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+
+	newColor := r.URL.Query().Get("value")
+
+	if newColor == "" {
+		h.WriteJSON(w, http.StatusBadRequest, h.APIResponse{
+			Success: false,
+			Message: "Missing new color query param",
+			Error:   "pass the query ?value=newcolor",
+		})
+		return
+	}
+
+	_, serviceErr := UpdateNoteColorService(r.URL.Path, newColor)
+
+	if serviceErr != nil {
+		h.WriteJSON(w, http.StatusInternalServerError, h.APIResponse{
+			Success: false,
+			Message: "Failed to update note color",
+			Error:   serviceErr.Error(),
+		})
+		return
+	}
+
+	h.WriteJSON(w, http.StatusOK, h.APIResponse{
+		Success: true,
+		Message: "Note color was updated successfully",
+	})
 }

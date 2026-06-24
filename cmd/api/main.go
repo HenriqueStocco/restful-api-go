@@ -12,10 +12,14 @@ import (
 )
 
 func main() {
-	http.HandleFunc(s.SetURL("/health"), h.HealthHandler)
-	http.HandleFunc(s.SetURL("/notes"), n.CreateNoteHandler)
-	http.HandleFunc(s.SetURL("/notes/all"), n.FindAllNotesHandler)
-	http.HandleFunc(s.SetURL("/notes/{noteId}"), n.FindNoteByIdHandler)
+	http.HandleFunc(string("GET "+s.SetURL("/health")), h.HealthHandler)
+	http.HandleFunc(string("POST "+s.SetURL("/note/create")), n.CreateNoteHandler)
+	http.HandleFunc(string("GET "+s.SetURL("/note/all")), n.FindAllNotesHandler)
+	http.HandleFunc(string("GET "+s.SetURL("/note/{noteId}")), n.FindNoteByIdHandler)
+	http.HandleFunc(string("PUT "+s.SetURL("/note/update/{noteId}")), n.UpdateNoteHandler)
+	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/title/{noteId}")), n.UpdateTitleNoteHandler)
+	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/description/{noteId}")), n.UpdateDescriptionNoteHandler)
+	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/color/{noteId}")), n.UpdateColorNoteHandler)
 
 	err := http.ListenAndServe("localhost:8000", nil)
 

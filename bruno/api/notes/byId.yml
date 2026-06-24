@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: http://localhost:8000/api/v1/notes/b0e7c10f-a331-4185-ad56-5398e197024b
+  url: http://localhost:8000/api/v1/note/de69619c-2ee9-4fa4-b759-aafed27675b9
   auth: inherit
 
 settings:
