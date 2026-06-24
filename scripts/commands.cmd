@@ -8,3 +8,6 @@ powershell bun x nodemon --exec go run .\cmd\api\main.go --signal SIGTERM
 @REM or add package.json file and add scripts
 @REM "scripts": { "go": "nodemon --exec go run .\cmd\api\main.go --signal SIGTERM" }
 @REM run: bun run go
+
+@REM grep like
+powershell go help | Select-String -Pattern env

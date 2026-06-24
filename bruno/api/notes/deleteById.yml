@@ -1,5 +1,5 @@
 info:
-  name: delete
+  name: deleteById
   type: http
   seq: 8
 

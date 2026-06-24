@@ -20,6 +20,8 @@ func main() {
 	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/title/{noteId}")), n.UpdateTitleNoteHandler)
 	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/description/{noteId}")), n.UpdateDescriptionNoteHandler)
 	http.HandleFunc(string("PATCH "+s.SetURL("/note/update/color/{noteId}")), n.UpdateColorNoteHandler)
+	http.HandleFunc(string("PATCH "+s.SetURL("/note/delete/{noteId}")), n.DeleteNoteByIdHandler)
+	http.HandleFunc(string("PATCH "+s.SetURL("/note/delete")), n.DeleteAllNotesHandler)
 
 	err := http.ListenAndServe("localhost:8000", nil)
 
