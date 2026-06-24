@@ -1,0 +1,10 @@
+[core]
+editor = code
+hooksPath = .githooks
+repositoryformatversion = 0
+filemode = true
+bare = false
+
+[diff "lockb"]
+textconv = bun
+binary = true
