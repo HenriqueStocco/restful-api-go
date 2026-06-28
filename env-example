@@ -1,0 +1,4 @@
+GO_ENV="dev" # dev | prod
+GO_PORT=8888
+GO_HOST="127.0.0.1"
+DATABASE_URL="database.db"
