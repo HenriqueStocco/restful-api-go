@@ -2,6 +2,7 @@ package notes
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/HenriqueStocco/restful-api-crud-go/internal/helpers"
@@ -20,11 +21,7 @@ func NewNoteHandler(service *NoteService) *NoteHandler {
 /* Função responsável para criação de notas */
 func (h *NoteHandler) CreateNote(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		helpers.WriteJSON(w, http.StatusMethodNotAllowed, helpers.APIResponse{
-			Success: false,
-			Message: "Method not allowed",
-			Error:   "use POST",
-		})
+		helpers.WriteError(w, http.StatusMethodNotAllowed, "INVALID_HTTP_METHOD", "invalid http method")
 		return
 	}
 
@@ -33,11 +30,7 @@ func (h *NoteHandler) CreateNote(w http.ResponseWriter, r *http.Request) {
 	var noteData CreateNoteRequestBodytDTO
 
 	if err := json.NewDecoder(r.Body).Decode(&noteData); err != nil {
-		helpers.WriteJSON(w, http.StatusBadRequest, helpers.APIResponse{
-			Success: false,
-			Message: "Invalid request body",
-			Error:   err.Error(),
-		})
+		helpers.WriteError(w, http.StatusBadRequest, "INVALID_JSON", "Invalid request body")
 		return
 	}
 
@@ -48,16 +41,21 @@ func (h *NoteHandler) CreateNote(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if serviceErr != nil {
-		helpers.WriteJSON(w, http.StatusInternalServerError, helpers.APIResponse{
-			Success: false,
-			Message: "Failed to create note",
-			Error:   serviceErr.Error(),
-		})
+		switch {
+		case errors.Is(serviceErr, ErrInvalidNoteTitle):
+			helpers.WriteError(w, http.StatusBadRequest, "INVALID_NOTE_TITLE", "invalid note title")
+
+		case errors.Is(serviceErr, ErrInvalidNoteDescription):
+			helpers.WriteError(w, http.StatusBadRequest, "INVALID_NOTE_DESCRIPTION", "invalid note description")
+
+		case errors.Is(serviceErr, ErrInvalidNoteTitle):
+			helpers.WriteError(w, http.StatusBadRequest, "INVALID_NOTE_COLOR", "invalid note color")
+		default:
+			helpers.WriteError(w, http.StatusInternalServerError, "INTERNAL_ERROR", "internal server error")
+		}
+
 		return
 	}
 
-	helpers.WriteJSON(w, http.StatusCreated, helpers.APIResponse{
-		Success: true,
-		Message: "Note created successfully",
-	})
+	helpers.WriteSuccess(w, http.StatusCreated, "note created successfully", nil)
 }

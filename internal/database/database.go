@@ -2,47 +2,54 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 
-	"log"
 	"os"
 	"path/filepath"
-	"time"
 
+	"github.com/HenriqueStocco/restful-api-crud-go/internal/config"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-/* Gerenciador de banco de dados */
-func DBConnection() (*sql.DB, error) {
-	const dirName string = "data"
-	const fileName string = "database.db"
-	var dbFilePath string = filepath.Join(dirName, fileName)
+func ensureSQLiteDir(connectionString string) error {
+	dir := filepath.Dir(connectionString)
 
-	_, err := os.ReadDir(dirName)
+	if dir == "." {
+		return nil
+	}
 
-	if err != nil {
-		if errr := os.Mkdir("data", 0755); errr != nil {
-			fmt.Printf("Error: %v\n", errr)
+	if err := os.Mkdir(dir, 0755); err != nil {
+		if errors.Is(err, os.ErrExist) {
+			return nil
+		}
+
+		return fmt.Errorf("failed to create SQLite directory: %w", err)
+	}
+
+	return nil
+}
+
+func OpenConnection(config config.DatabaseConfig) (*sql.DB, error) {
+	if config.Driver == "sqlite3" {
+		if err := ensureSQLiteDir(config.ConnectionString); err != nil {
+			return nil, err
 		}
 	}
 
-	db, err := sql.Open("sqlite3", dbFilePath)
+	db, dbErr := sql.Open(config.Driver, config.ConnectionString)
 
-	if err != nil {
-		return nil, err
+	if dbErr != nil {
+		return nil, fmt.Errorf("failed to open database: %w", dbErr)
 	}
 
-	db.SetMaxOpenConns(1)
-	db.SetMaxIdleConns(1)
-	db.SetConnMaxLifetime(time.Hour)
+	db.SetMaxOpenConns(config.MaxOpenConns)
+	db.SetMaxIdleConns(config.MaxIdleConns)
+	db.SetConnMaxLifetime(config.MaxLifeTime)
 
-	if err := db.Ping(); err != nil {
+	if pingErr := db.Ping(); pingErr != nil {
 		db.Close()
-		return nil, err
-	}
-
-	if err := Migration(db); err != nil {
-		log.Fatal("Failed to make migrations", err)
+		return nil, fmt.Errorf("failed to ping database: %w", pingErr)
 	}
 
 	return db, nil
