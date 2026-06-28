@@ -1,12 +1,27 @@
 package notes
 
-import "github.com/google/uuid"
+import (
+	"time"
 
-type NoteSchema struct {
-	Id          uuid.UUID `json:"id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Color       string    `json:"color"`
-	CreatedAt   string    `json:"created_at"`
-	UpdatedAt   string    `json:"updated_at"`
+	"github.com/google/uuid"
+)
+
+type NoteModel struct {
+	ID          uuid.UUID
+	Title       string
+	Description string
+	Color       string
+	Active      bool
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
+
+func NoteEntityToModel(note *NoteEntity) NoteModel {
+	return NoteModel{
+		ID:          note.ID,
+		Title:       note.Title,
+		Description: note.Description,
+		Color:       note.Color,
+		Active:      note.Active,
+	}
 }

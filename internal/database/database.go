@@ -2,7 +2,10 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
+
 	"log"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -11,7 +14,17 @@ import (
 
 /* Gerenciador de banco de dados */
 func DBConnection() (*sql.DB, error) {
-	dbFilePath := filepath.Base("data/database.db")
+	const dirName string = "data"
+	const fileName string = "database.db"
+	var dbFilePath string = filepath.Join(dirName, fileName)
+
+	_, err := os.ReadDir(dirName)
+
+	if err != nil {
+		if errr := os.Mkdir("data", 0755); errr != nil {
+			fmt.Printf("Error: %v\n", errr)
+		}
+	}
 
 	db, err := sql.Open("sqlite3", dbFilePath)
 

@@ -12,6 +12,7 @@ func Migration(db *sql.DB) error {
     		title TEXT NOT NULL,
     		description TEXT,
     		color TEXT DEFAULT "white",
+			active INTEGER NOTE NULL DEFAULT 0,
     		created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     		updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 		);
