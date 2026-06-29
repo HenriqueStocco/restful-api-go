@@ -16,7 +16,6 @@ func NewNoteService(repository *NoteRepository) *NoteService {
 
 /* Responsável por tratar dados antes de criar uma nota */
 func (s *NoteService) CreateNote(note CreateNoteRequestBodytDTO) error {
-
 	noteId := uuid.New()
 
 	noteData, entityErr := NewNoteEntity(noteId, note.Title, note.Description, note.Color)
@@ -32,4 +31,14 @@ func (s *NoteService) CreateNote(note CreateNoteRequestBodytDTO) error {
 	}
 
 	return nil
+}
+
+func (s *NoteService) GetAll() ([]*NoteModel, error) {
+	noteArrayData, err := s.repository.GetAll()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return noteArrayData, nil
 }

@@ -59,3 +59,10 @@ func (h *NoteHandler) CreateNote(w http.ResponseWriter, r *http.Request) {
 
 	helpers.WriteSuccess(w, http.StatusCreated, "note created successfully", nil)
 }
+
+func (h *NoteHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		helpers.WriteError(w, http.StatusMethodNotAllowed, "INVALID_HTTP_METHOD", "invalid http method")
+		return
+	}
+}

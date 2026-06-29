@@ -46,3 +46,40 @@ func (r *NoteRepository) Create(note *NoteModel) error {
 
 	return nil
 }
+
+func (r *NoteRepository) GetAll() ([]*NoteModel, error) {
+	query := `
+		SELECT
+			*
+		FROM 
+			notes;
+	`
+
+	rows, queryRowErr := r.db.Query(query)
+
+	if queryRowErr != nil {
+		return nil, queryRowErr
+	}
+
+	defer rows.Close()
+
+	var noteArrayData []*NoteModel
+
+	for rows.Next() {
+		var note *NoteModel
+
+		scanErr := rows.Scan(&note.ID, &note.Title, &note.Description, &note.Color, &note.Active, &note.CreatedAt, &note.UpdatedAt)
+
+		if scanErr != nil {
+			return nil, scanErr
+		}
+
+		noteArrayData = append(noteArrayData, note)
+	}
+
+	if rowErr := rows.Err(); rowErr != nil {
+		return nil, rowErr
+	}
+
+	return noteArrayData, nil
+}
